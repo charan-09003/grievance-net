@@ -1,0 +1,12 @@
+{
+  "labels":[
+    "Building Department",
+    "Electric Department",
+    "Road Department",
+    "Sanitation Department",
+    "Sewerage Department",
+    "Water Supply Department"
+  ],
+  "threshold":0.0,
+  "positive_label":null
+}

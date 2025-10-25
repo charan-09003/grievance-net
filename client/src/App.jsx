@@ -9,6 +9,8 @@ function App() {
     description: "",
   });
 
+  const [result, setResult] = useState(null); // To display backend response
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -19,26 +21,42 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://127.0.0.1:5000/api/submit_complaint", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await fetch("http://127.0.0.1:5000/api/submit_complaint", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    const data = await res.json();
-    alert(data.message);
+      const data = await res.json();
 
-    setFormData({
-      name: "",
-      email: "",
-      location: "",
-      urgency: "medium",
-      description: "",
-    });
+      // Set the result to display
+      setResult({
+        message: data.message,
+        category: data.predicted_category,
+        urgency: data.assigned_urgency,
+      });
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        location: "",
+        urgency: "medium",
+        description: "",
+      });
+    } catch (error) {
+      console.error("Error submitting complaint:", error);
+      setResult({
+        message: "Failed to submit complaint. Please try again.",
+        category: "",
+        urgency: "",
+      });
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 p-8">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 p-8">
       <div className="bg-white/90 backdrop-blur-md rounded-3xl shadow-2xl p-10 w-full max-w-lg border border-white/40">
         <h2 className="text-3xl font-extrabold text-center mb-8 text-gray-800 tracking-wide">
           🌟 Submit Your Complaint
@@ -134,6 +152,23 @@ function App() {
             🚀 Submit Complaint
           </button>
         </form>
+
+        {/* Display Result */}
+        {result && (
+          <div className="mt-6 p-4 bg-green-100 rounded-lg text-green-800">
+            <p className="font-semibold">{result.message}</p>
+            {result.category && (
+              <p>
+                <strong>Predicted Category:</strong> {result.category}
+              </p>
+            )}
+            {result.urgency && (
+              <p>
+                <strong>Assigned Urgency:</strong> {result.urgency}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
