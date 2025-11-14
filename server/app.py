@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_pymongo import PyMongo
 import spacy
 import os
+from smtp_mail import send_complaint
 
 app = Flask(__name__)
 CORS(app)  # Allow frontend (React) to connect
@@ -58,6 +59,15 @@ def submit_complaint():
         'urgency': final_urgency
     })
 
+    smtp_result = send_complaint(
+        user_name=name,
+        user_email=email,
+        department=predicted_category,
+        user_address=location,
+        complaint_subject=f"{predicted_category} issue reported at {location}",
+        complaint_description=description,
+    )
+
     print(f"Complaint by {name} ({final_urgency} urgency): {description}")
     print(f"Predicted category: {predicted_category}, Score: {category_score:.2f}")
 
@@ -68,6 +78,7 @@ def submit_complaint():
         'predicted_category': predicted_category,
         'category_score': category_score,
         'assigned_urgency': final_urgency,
+        'smtp_result': smtp_result,
         'all_category_scores': categories
     })
 
