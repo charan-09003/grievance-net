@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  scroll-behavior: smooth;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@layer utilities {
+  .h-center {
+    @apply flex justify-center items-center;
+  }
+
+  .v-center {
+    @apply flex flex-col justify-center items-center;
+  }
+
+  .bg-primary {
+    @apply bg-[#f26e42];
+  }
+
+  .text-primary {
+    @apply text-[#f26e42];
+  }
+
+  .bg-primary-light {
+    @apply bg-[#fef7f4];
+  }
+
+  .text-app-dark {
+    @apply text-[#594537];
+  }
+}

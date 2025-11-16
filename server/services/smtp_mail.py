@@ -2,7 +2,6 @@ import smtplib
 from email.message import EmailMessage
 
 
-# Mapping of departments to official government emails
 department_emails = {
     "Building Department": "grievancenet@gmail.com",
     "Electric Department": "grievancenet@gmail.com",
@@ -85,7 +84,7 @@ Government Support Team
 
     # ------------------------------
     # 4️⃣ Send both emails via SMTP
-    # ------------------------------    
+    # ------------------------------
     try:
         with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
             smtp.ehlo()
@@ -93,6 +92,6 @@ Government Support Team
             smtp.login("cherryorthon09003@gmail.com", "fbae wrwv jqsi sqgp")  # use app password, not your real one
             smtp.send_message(msg)       # send to department
             smtp.send_message(user_msg)  # confirmation to user
-        return "✅ Complaint sent successfully!"
+        return "Complaint sent successfully!"
     except Exception as e:
-        return f"❌ Error sending complaint: {e}"
+        return f"Error sending complaint: {e}"
